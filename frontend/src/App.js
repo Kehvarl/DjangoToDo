@@ -1,33 +1,32 @@
 import React, {Component} from 'react';
 
-const list = [
-  {
-    "id":1,
-    "title":"Learn HTTP",
-    "body":"Example To Do re: HTTP"
-  },
-  {
-    "id":2,
-    "title":"Second Item",
-    "body":"Second ToDo Example"
-  },
-  {
-    "id":3,
-    "title":"Demo ToDo 3",
-    "body":"Adding test items!"
-  }
-];
+import axios from 'axios';
+
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { list };
+  state = {
+    todos: []
+  };
+
+  componentDidMount() {
+    this.getTodos();
+  }
+
+  getTodos() {
+    axios
+      .get('http://127.0.0.1:8000/api/')
+      .then(res => {
+        this.setState({ todos: res.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   render() {
     return (
       <div>
-        {this.state.list.map(item => (
+        {this.state.todos.map(item => (
           <div key={item.id}>
             <h1>{item.title}</h1>
             <p>{item.body}</p>
